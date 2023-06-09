@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Denis Teikhrib](https://up.htmlacademy.ru/javascript/29/user/2257959).
-* Наставник: `Неизвестно`.
+* Наставник: [Павел Лукин](https://htmlacademy.ru/profile/id1313529).
 
 ---
 
