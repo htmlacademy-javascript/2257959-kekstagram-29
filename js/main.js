@@ -1,10 +1,11 @@
-/* eslint-disable no-console */
-const PHOTOS_COUNT = 25;
+const PHOTO_COUNT = 25;
 const MIN_LIKES_COUNT = 15;
 const MAX_LIKES_COUNT = 200;
-const MAX_COMMENTS_COUNT = 30;
-const MAX_COMMENTS_ID_COUNT = 750;
-const MAX_AVATARS_COUNT = 6;
+const MIN_COMMENT_COUNT = 0;
+const MAX_COMMENT_COUNT = 30;
+const MIN_COMMENT_ID = 100;
+const MIN_AVATAR_NUMBER = 1;
+const MAX_AVATAR_NUMBER = 6;
 
 const PHOTO_DESCRIPTIONS = [
   'Отель Eden в городе Ровинь, Хорватия.',
@@ -65,47 +66,38 @@ const NAMES = [
 const getRandomIntegerInclusive = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
   const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
-
   return Math.floor(Math.random() * (upper - lower + 1) + lower);
 };
 
-const getRandomUniqId = (min, max) => {
-  const values = new Set;
-
-  return () => {
-    let currentValue = getRandomIntegerInclusive(min, max);
-
-    if (values.size >= (max - min + 1)) {
-      return null;
-    }
-
-    while (values.has(currentValue)) {
-      currentValue = getRandomIntegerInclusive(min, max);
-    }
-
-    values.add(currentValue);
-    return currentValue;
-  };
+const createSequence = (startNumber = 1) => {
+  let index = startNumber;
+  return () => index++;
 };
 
-const generatePhotoId = getRandomUniqId(1, PHOTOS_COUNT);
-const generateCommentId = getRandomUniqId(1, MAX_COMMENTS_ID_COUNT);
+const generatePhotoId = createSequence();
+const generateCommentId = createSequence(MIN_COMMENT_ID);
 const getRandomArrayElement = (elements) => elements[getRandomIntegerInclusive(0, elements.length - 1)];
 
-class Comment {
-  id = generateCommentId();
-  avatar = `img/avatar-${getRandomIntegerInclusive(1, MAX_AVATARS_COUNT)}.svg`;
-  message = Array.from({ length: getRandomIntegerInclusive(1, 2) }, () => getRandomArrayElement(MESSAGES)).join(' ');
-  name = getRandomArrayElement(NAMES);
-}
+const createComment = (id) => ({
+  id,
+  avatar: `img/avatar-${getRandomIntegerInclusive(MIN_AVATAR_NUMBER, MAX_AVATAR_NUMBER)}.svg`,
+  message: Array.from({ length: getRandomIntegerInclusive(1, 2) }, () => getRandomArrayElement(MESSAGES)).join(' '),
+  name: getRandomArrayElement(NAMES),
+});
 
-class Photo {
-  id = generatePhotoId();
-  url = `photos/${this.id}.jpg`;
-  description = PHOTO_DESCRIPTIONS[this.id - 1];
-  likes = getRandomIntegerInclusive(MIN_LIKES_COUNT, MAX_LIKES_COUNT);
-  comments = Array.from({ length: getRandomIntegerInclusive(0, MAX_COMMENTS_COUNT) }, () => new Comment());
-}
+const createComments = () =>
+  Array.from(
+    { length: getRandomIntegerInclusive(MIN_COMMENT_COUNT, MAX_COMMENT_COUNT) },
+    () => createComment(generateCommentId()),
+  );
 
-const photos = Array.from({ length: PHOTOS_COUNT }, () => new Photo());
-console.log(photos);
+const createPhoto = (id) => ({
+  id,
+  url: `photos/${id}.jpg`,
+  description: PHOTO_DESCRIPTIONS[id - 1],
+  likes: getRandomIntegerInclusive(MIN_LIKES_COUNT, MAX_LIKES_COUNT),
+  comments: createComments(),
+});
+
+const createPhotos = () => Array.from({ length: PHOTO_COUNT }, () => createPhoto(generatePhotoId()));
+createPhotos();
