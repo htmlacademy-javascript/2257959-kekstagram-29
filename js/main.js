@@ -74,7 +74,6 @@ const createSequence = (startNumber = 1) => {
   return () => index++;
 };
 
-const generatePhotoId = createSequence();
 const generateCommentId = createSequence(MIN_COMMENT_ID);
 const getRandomArrayElement = (elements) => elements[getRandomIntegerInclusive(0, elements.length - 1)];
 
@@ -99,5 +98,5 @@ const createPhoto = (id) => ({
   comments: createComments(),
 });
 
-const createPhotos = () => Array.from({ length: PHOTO_COUNT }, () => createPhoto(generatePhotoId()));
+const createPhotos = () => Array.from({ length: PHOTO_COUNT }, (_, index) => createPhoto(index + 1));
 createPhotos();
