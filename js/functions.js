@@ -60,9 +60,9 @@ const getMinutesInHours = (string) => string
     : accumulator + parseInt(element, 10), 0);
 
 const isWithinWorkingHours = (startTimeDay, endTimeDay, startTimeMeeting, durationMeeting) => {
-  const endTimeMeeting = getMinutesInHours(startTimeMeeting) + durationMeeting;
-  const isAfterStartTimeDay = getMinutesInHours(startTimeDay) <= getMinutesInHours(startTimeMeeting);
-  const isBeforeEndTimeDay = getMinutesInHours(endTimeDay) >= endTimeMeeting;
+  const startTimeMeetingInMinutes = getMinutesInHours(startTimeMeeting);
+  const isAfterStartTimeDay = getMinutesInHours(startTimeDay) <= startTimeMeetingInMinutes;
+  const isBeforeEndTimeDay = getMinutesInHours(endTimeDay) - durationMeeting >= startTimeMeetingInMinutes;
   return isAfterStartTimeDay && isBeforeEndTimeDay;
 };
 
