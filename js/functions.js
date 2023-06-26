@@ -16,7 +16,7 @@ const isPalindrome = (string) => {
 
 isPalindrome('ЛёШа на полке Клопа нашёл ');
 
-const isPalindromeSecondVerion = (string) => {
+const isPalindromeSecondVersion = (string) => {
   if (!string.length) {
     return false;
   }
@@ -25,7 +25,14 @@ const isPalindromeSecondVerion = (string) => {
 
   if (normalizedString) {
     for (let index = 0; index < string.length / 2; index += 1) {
-      if (normalizedString.at(index).localeCompare(normalizedString.at(-index - 1), undefined, { sensitivity: 'base' }) !== 0) {
+      const character = normalizedString.at(index);
+      const compareResult = character.localeCompare(
+        normalizedString.at(-index - 1),
+        undefined,
+        { sensitivity: 'base' }
+      );
+
+      if (compareResult !== 0) {
         return false;
       }
     }
@@ -34,13 +41,29 @@ const isPalindromeSecondVerion = (string) => {
   return true;
 };
 
-isPalindromeSecondVerion('ЛёШа на полке Клопа нашёл ');
+isPalindromeSecondVersion('ЛёШа на полке Клопа нашёл ');
 
 const getNumbers = (value) => {
   const string = String(value);
-  const filteredString = [...string].filter((character) => !Number.isNaN(parseInt(character, 10))).join('');
+  const filteredString = [...string].filter((character) =>
+    !Number.isNaN(parseInt(character, 10))).join('');
 
   return parseInt(filteredString, 10) || NaN;
 };
 
 getNumbers('ECMAScript 2022');
+
+const getMinutesInHours = (string) => string
+  .split(':')
+  .reduce((accumulator, element, index) => index === 0
+    ? accumulator + parseInt(element, 10) * 60
+    : accumulator + parseInt(element, 10), 0);
+
+const isWithinWorkingHours = (startTimeDay, endTimeDay, startTimeMeeting, durationMeeting) => {
+  const endTimeMeeting = getMinutesInHours(startTimeMeeting) + durationMeeting;
+  const isAfterStartTimeDay = getMinutesInHours(startTimeDay) <= getMinutesInHours(startTimeMeeting);
+  const isBeforeEndTimeDay = getMinutesInHours(endTimeDay) >= endTimeMeeting;
+  return isAfterStartTimeDay && isBeforeEndTimeDay;
+};
+
+isWithinWorkingHours('08:00', '17:30', '14:00', 90);
