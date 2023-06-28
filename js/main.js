@@ -1,3 +1,3 @@
-import { createPhotos } from './photo.js';
+import { createThumbnails } from './thumbnail.js';
 
-createPhotos();
+createThumbnails();
