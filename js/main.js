@@ -1,3 +1,5 @@
 import { createPhotos } from './photo.js';
+import { displayThumbnails } from './thumbnail.js';
 
-createPhotos();
+const photos = createPhotos();
+displayThumbnails(photos);

@@ -2,7 +2,7 @@ import {
   getRandomIntegerInclusive,
   createSequence,
   getRandomArrayElement
-} from './utils.js';
+} from './util.js';
 
 const PHOTO_COUNT = 25;
 const MIN_LIKES_COUNT = 15;
