@@ -1,5 +1,5 @@
 import { createPhotos } from './photo.js';
-import { displayThumbnails } from './thumbnail.js';
+import { renderThumbnails } from './thumbnail.js';
 
 const photos = createPhotos();
-displayThumbnails(photos);
+renderThumbnails(photos);

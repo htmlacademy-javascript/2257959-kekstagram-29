@@ -1,22 +1,33 @@
 
+import { renderPhotoModal } from './modal.js';
+
 const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
-const createThumbnail = ({ url, description, likes, comments }) => {
-  const pictureElement = pictureTemplate.cloneNode(true);
+const onThumbnailClick = (...parameters) => {
+  const [url, description, likes, comments, evt] = parameters;
+  evt.preventDefault();
 
-  const image = pictureElement.querySelector('.picture__img');
+  renderPhotoModal(url, description, likes, comments);
+};
+
+const createThumbnail = ({ url, description, likes, comments }) => {
+  const thumbnail = pictureTemplate.cloneNode(true);
+
+  const image = thumbnail.querySelector('.picture__img');
   image.src = url;
   image.alt = description;
 
-  pictureElement.querySelector('.picture__likes').textContent = likes;
-  pictureElement.querySelector('.picture__comments').textContent = comments.length;
+  thumbnail.querySelector('.picture__likes').textContent = likes;
+  thumbnail.querySelector('.picture__comments').textContent = comments.length;
 
-  return pictureElement;
+  thumbnail.addEventListener('click', onThumbnailClick.bind(null, url, description, likes, comments));
+
+  return thumbnail;
 };
 
-const displayThumbnails = (photos) => picturesContainer.append(...photos.map(createThumbnail));
+const renderThumbnails = (photos) => picturesContainer.append(...photos.map(createThumbnail));
 
-export { displayThumbnails };
+export { renderThumbnails };
