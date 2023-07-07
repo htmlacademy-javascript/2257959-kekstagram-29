@@ -1,4 +1,6 @@
-import { handleEscapeKey } from './util.js';
+import { handleEscapeKey } from './utils.js';
+
+const COMMENTS_PER_LOAD = 5;
 
 const photoModal = document.querySelector('.big-picture');
 const photo = photoModal.querySelector('.big-picture__img img');
@@ -14,12 +16,12 @@ const commentTemplate = document.querySelector('#comment')
   .querySelector('.social__comment');
 
 const setCommentCounter = (initialCount) => {
-  const initialCommentCount = initialCount >= 5 ? 5 : initialCount;
+  const initialCommentCount = initialCount >= COMMENTS_PER_LOAD ? COMMENTS_PER_LOAD : initialCount;
   currentCommentCounter.textContent = `${initialCommentCount} из `;
 };
 
 const increaseCommentCounter = (count) => {
-  let currentCommentCount = Number(currentCommentCounter.textContent.split(' ')[0]);
+  let currentCommentCount = parseInt(currentCommentCounter.textContent, 10);
   currentCommentCount += count;
   currentCommentCounter.textContent = `${currentCommentCount} из `;
 };
@@ -41,7 +43,7 @@ const appendComments = (commentData) => {
   commentList.append(...commentData.map((commentDatum, index) => {
     const comment = createComment(commentDatum);
 
-    if (index >= 5) {
+    if (index >= COMMENTS_PER_LOAD) {
       comment.classList.add('hidden');
     }
 
@@ -54,12 +56,12 @@ const renderComments = () => {
     .filter((item) => item.classList.contains('hidden'));
   const { length } = filteredComments;
 
-  if (length <= 5) {
+  if (length <= COMMENTS_PER_LOAD) {
     buttonToLoadComments.classList.add('hidden');
   }
 
   let index = 0;
-  while (index < length && index < 5) {
+  while (index < length && index < COMMENTS_PER_LOAD) {
     filteredComments[index].classList.remove('hidden');
     index += 1;
   }
@@ -75,7 +77,7 @@ const initiatePhotoModal = (url, description, likes, comments) => {
   overallCommentCounter.textContent = length;
   photoCaption.textContent = description;
 
-  if (length <= 5) {
+  if (length <= COMMENTS_PER_LOAD) {
     buttonToLoadComments.classList.add('hidden');
   }
 
