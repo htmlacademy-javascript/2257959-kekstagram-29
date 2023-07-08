@@ -12,8 +12,18 @@ const createSequence = (startNumber = 1) => {
 const getRandomArrayElement = (elements) =>
   elements[getRandomIntegerInclusive(0, elements.length - 1)];
 
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+const handleEscapeKey = (callback, evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    callback();
+  }
+};
+
 export {
   getRandomIntegerInclusive,
   createSequence,
-  getRandomArrayElement
+  getRandomArrayElement,
+  handleEscapeKey,
 };

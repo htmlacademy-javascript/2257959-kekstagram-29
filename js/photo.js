@@ -2,7 +2,7 @@ import {
   getRandomIntegerInclusive,
   createSequence,
   getRandomArrayElement
-} from './util.js';
+} from './utils.js';
 
 const PHOTO_COUNT = 25;
 const MIN_LIKES_COUNT = 15;
@@ -18,7 +18,7 @@ const PHOTO_DESCRIPTIONS = [
   'Уличный знак с направлением к пляжу в травянистом поле.',
   'Голубая лагуна на фоне неба и зелени.',
   'Женщина в бикини стоит на пляже с фотоаппаратом.',
-  'Две миски супа с морковью рисом.',
+  'Две миски супа с морковью и рисом.',
   'McLaren P1.',
   'Клубника на деревянной тарелке.',
   'Кисель из ягод.',
