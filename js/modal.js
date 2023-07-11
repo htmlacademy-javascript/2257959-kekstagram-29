@@ -16,7 +16,9 @@ const commentTemplate = document.querySelector('#comment')
   .querySelector('.social__comment');
 
 const setCommentCounter = (initialCount) => {
-  const initialCommentCount = initialCount >= COMMENTS_PER_LOAD ? COMMENTS_PER_LOAD : initialCount;
+  const initialCommentCount = initialCount >= COMMENTS_PER_LOAD
+    ? COMMENTS_PER_LOAD
+    : initialCount;
   currentCommentCounter.textContent = `${initialCommentCount} из `;
 };
 
@@ -87,6 +89,13 @@ const initiatePhotoModal = (url, description, likes, comments) => {
 
 const onDocumentKeydown = handleEscapeKey.bind(null, closePhotoModal);
 
+const onButtonToCloseModalClick = () => closePhotoModal();
+
+const onButtonToLoadCommentsClick = () => {
+  const count = renderComments();
+  increaseCommentCounter(count);
+};
+
 function closePhotoModal() {
   document.body.classList.remove('modal-open');
   buttonToLoadComments.classList.remove('hidden');
@@ -105,12 +114,6 @@ const openPhotoModal = () => {
 const renderPhotoModal = (...photoParameters) => {
   initiatePhotoModal(...photoParameters);
   openPhotoModal();
-};
-
-const onButtonToCloseModalClick = () => closePhotoModal();
-const onButtonToLoadCommentsClick = () => {
-  const count = renderComments();
-  increaseCommentCounter(count);
 };
 
 buttonToCloseModal.addEventListener('click', onButtonToCloseModalClick);
