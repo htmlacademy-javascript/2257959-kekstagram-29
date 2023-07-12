@@ -21,9 +21,18 @@ const handleEscapeKey = (callback, evt) => {
   }
 };
 
+const show = (element) => element.classList.remove('hidden');
+
+const hide = (element) => element.classList.add('hidden');
+
+const isHidden = (element) => element.classList.contains('hidden');
+
 export {
   getRandomIntegerInclusive,
   createSequence,
   getRandomArrayElement,
   handleEscapeKey,
+  show,
+  hide,
+  isHidden,
 };
