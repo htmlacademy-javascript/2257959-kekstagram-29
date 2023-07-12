@@ -1,3 +1,8 @@
+import {
+  show,
+  hide,
+} from './utils.js';
+
 const sliderConfigs = {
   chrome: {
     option: {
@@ -84,13 +89,7 @@ const sliderConfigs = {
   },
 };
 
-const createFormSlider = (form, image) => {
-  const inputForEffect = form.querySelector('.effect-level__value');
-  const sliderContainer = form.querySelector('.img-upload__effect-level');
-  const slider = form.querySelector('.effect-level__slider');
-  const radioButtons = form.querySelectorAll('.effects__radio ');
-  const effectsList = form.querySelector('.effects__list');
-
+const createSlider = (slider) => {
   noUiSlider.create(slider, {
     range: {
       'min': 0,
@@ -99,39 +98,53 @@ const createFormSlider = (form, image) => {
     start: 0,
     connect: 'lower',
   });
+};
 
-  slider.noUiSlider.on('update', (values, handle) => {
-    const newValue = values[handle];
-    const newFilterValue = image.style.filter.replace(/\(.*\)/, `(${newValue})`);
+const onSliderUpdate = (input, image, values, handle) => {
+  const newValue = values[handle];
+  const newFilterValue = image.style.filter.replace(/\(.*\)/, `(${newValue})`);
 
-    inputForEffect.value = newValue;
-    image.style.filter = newFilterValue;
-  });
+  input.value = newValue;
+  image.style.filter = newFilterValue;
+};
 
-  const onEffectsListChange = () => {
-    const checkedRadioButton = [...radioButtons].find((radioButton) => radioButton.checked);
-    const effect = checkedRadioButton.id.split('-').at(-1);
+function onRadioButtonChange(input, slider, sliderContainer, image) {
+  const { option = null, filter } = sliderConfigs[this.value] ?? {};
 
-    if (effect !== 'none') {
-      const config = sliderConfigs[effect];
+  if (option) {
+    image.style.setProperty('filter', `${filter}()`);
+    slider.noUiSlider.updateOptions(option);
+    show(sliderContainer);
+  } else {
+    hide(sliderContainer);
+    image.style.removeProperty('filter');
+    input.value = '';
+  }
+}
 
-      image.style.setProperty('filter', `${config.filter}()`);
-      slider.noUiSlider.updateOptions(config.option);
+const createFormSlider = (form, image) => {
+  const effectInput = form.querySelector('.effect-level__value');
+  const sliderContainer = form.querySelector('.img-upload__effect-level');
+  const slider = form.querySelector('.effect-level__slider');
+  const radioButtons = form.querySelectorAll('.effects__radio');
 
-      sliderContainer.classList.remove('hidden');
-    } else {
-      sliderContainer.classList.add('hidden');
-      image.style.removeProperty('filter');
-      inputForEffect.value = '';
-    }
-  };
+  createSlider(slider);
 
-  effectsList.addEventListener('change', onEffectsListChange);
+  slider.noUiSlider.on('update', onSliderUpdate.bind(null, effectInput, image));
+
+  radioButtons.forEach((radioButton) =>
+    radioButton.addEventListener('change', onRadioButtonChange.bind(
+      radioButton,
+      effectInput,
+      slider,
+      sliderContainer,
+      image
+    )));
 
   return {
-    reset: () => {
+    reset() {
       image.style.removeProperty('filter');
-      sliderContainer.classList.add('hidden');
+      hide(sliderContainer);
     },
   };
 };

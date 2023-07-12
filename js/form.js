@@ -1,25 +1,27 @@
-import { handleEscapeKey } from './utils.js';
+import {
+  handleEscapeKey,
+  show,
+  hide,
+} from './utils.js';
 import { createFormValidation } from './validate.js';
 import { createFormScaling } from './scale.js';
 import { createFormSlider } from './slider.js';
 
 const form = document.querySelector('#upload-select-image');
 const image = form.querySelector('.img-upload__preview img');
-const inputToUploadFile = form.querySelector('#upload-file');
+const uploadFileInput = form.querySelector('#upload-file');
 const formModal = form.querySelector('.img-upload__overlay');
-const buttonToCloseModal = form.querySelector('.img-upload__cancel');
+const closeModalButton = form.querySelector('.img-upload__cancel');
 
 const formValidation = createFormValidation(form);
 const formScaling = createFormScaling(form, image);
 const formSlider = createFormSlider(form, image);
 
-const onInputToUploadFile = () => {
-  openFormModal();
-};
+const onUploadFileInputChange = openFormModal;
 
-const onButtonToCloseModalClick = () => closeFormModal();
+const onCloseModalButtonClick = closeFormModal;
 
-const onDocumentKeydown = handleEscapeKey.bind(null, closeFormModal);
+const onDocumentKeydown = (evt) => handleEscapeKey(closeFormModal, evt);
 
 const onFormSubmit = (evt) => {
   const isValidForm = formValidation.validate();
@@ -40,7 +42,7 @@ const formReset = () => {
 
 function closeFormModal() {
   document.body.classList.remove('modal-open');
-  formModal.classList.add('hidden');
+  hide(formModal);
 
   formReset();
 
@@ -49,14 +51,14 @@ function closeFormModal() {
 
 function openFormModal() {
   document.body.classList.add('modal-open');
-  formModal.classList.remove('hidden');
+  show(formModal);
 
   document.addEventListener('keydown', onDocumentKeydown);
 }
 
 const initiateForm = () => {
-  inputToUploadFile.addEventListener('change', onInputToUploadFile);
-  buttonToCloseModal.addEventListener('click', onButtonToCloseModalClick);
+  uploadFileInput.addEventListener('change', onUploadFileInputChange);
+  closeModalButton.addEventListener('click', onCloseModalButtonClick);
   form.addEventListener('submit', onFormSubmit);
 };
 

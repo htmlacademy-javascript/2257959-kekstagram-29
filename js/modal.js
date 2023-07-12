@@ -1,4 +1,9 @@
-import { handleEscapeKey } from './utils.js';
+import {
+  handleEscapeKey,
+  show,
+  hide,
+  isHidden,
+} from './utils.js';
 
 const COMMENTS_PER_LOAD = 5;
 
@@ -9,8 +14,8 @@ const currentCommentCounter = photoModal.querySelector('.social__comment-count')
 const overallCommentCounter = photoModal.querySelector('.comments-count');
 const photoCaption = photoModal.querySelector('.social__caption');
 const commentList = photoModal.querySelector('.social__comments');
-const buttonToCloseModal = photoModal.querySelector('#picture-cancel');
-const buttonToLoadComments = photoModal.querySelector('.comments-loader');
+const closeModalButton = photoModal.querySelector('#picture-cancel');
+const loadCommentsButton = photoModal.querySelector('.comments-loader');
 const commentTemplate = document.querySelector('#comment')
   .content
   .querySelector('.social__comment');
@@ -46,7 +51,7 @@ const appendComments = (commentData) => {
     const comment = createComment(commentDatum);
 
     if (index >= COMMENTS_PER_LOAD) {
-      comment.classList.add('hidden');
+      hide(comment);
     }
 
     return comment;
@@ -54,17 +59,16 @@ const appendComments = (commentData) => {
 };
 
 const renderComments = () => {
-  const filteredComments = [...commentList.children]
-    .filter((item) => item.classList.contains('hidden'));
+  const filteredComments = [...commentList.children].filter(isHidden);
   const { length } = filteredComments;
 
   if (length <= COMMENTS_PER_LOAD) {
-    buttonToLoadComments.classList.add('hidden');
+    hide(loadCommentsButton);
   }
 
   let index = 0;
   while (index < length && index < COMMENTS_PER_LOAD) {
-    filteredComments[index].classList.remove('hidden');
+    show(filteredComments[index]);
     index += 1;
   }
 
@@ -80,33 +84,33 @@ const initiatePhotoModal = (url, description, likes, comments) => {
   photoCaption.textContent = description;
 
   if (length <= COMMENTS_PER_LOAD) {
-    buttonToLoadComments.classList.add('hidden');
+    hide(loadCommentsButton);
   }
 
   setCommentCounter(length);
   appendComments(comments);
 };
 
-const onDocumentKeydown = handleEscapeKey.bind(null, closePhotoModal);
+const onDocumentKeydown = (evt) => handleEscapeKey(closePhotoModal, evt);
 
-const onButtonToCloseModalClick = () => closePhotoModal();
+const onCloseModalButtonClick = () => closePhotoModal();
 
-const onButtonToLoadCommentsClick = () => {
+const onLoadCommentsButtonClick = () => {
   const count = renderComments();
   increaseCommentCounter(count);
 };
 
 function closePhotoModal() {
   document.body.classList.remove('modal-open');
-  buttonToLoadComments.classList.remove('hidden');
-  photoModal.classList.add('hidden');
+  show(loadCommentsButton);
+  hide(photoModal);
 
   document.removeEventListener('keydown', onDocumentKeydown);
 }
 
 const openPhotoModal = () => {
   document.body.classList.add('modal-open');
-  photoModal.classList.remove('hidden');
+  show(photoModal);
 
   document.addEventListener('keydown', onDocumentKeydown);
 };
@@ -116,7 +120,7 @@ const renderPhotoModal = (...photoParameters) => {
   openPhotoModal();
 };
 
-buttonToCloseModal.addEventListener('click', onButtonToCloseModalClick);
-buttonToLoadComments.addEventListener('click', onButtonToLoadCommentsClick);
+closeModalButton.addEventListener('click', onCloseModalButtonClick);
+loadCommentsButton.addEventListener('click', onLoadCommentsButtonClick);
 
 export { renderPhotoModal };
