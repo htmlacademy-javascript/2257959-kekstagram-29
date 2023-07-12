@@ -14,20 +14,20 @@ const createPristineValidator = (form) => new Pristine(
   },
   true);
 
-const normalizeHashtagTags = (hashtagString) => hashtagString.trim().toLowerCase().split(/\s+/);
+const normalizeHashtags = (hashtagString) => hashtagString.trim().toLowerCase().split(/\s+/);
 
 const isValidHashtag = (hashtag) => HASHTAG_PATTERN.test(hashtag);
 
 const validateHashtagCount = (hashtagString) =>
-  normalizeHashtagTags(hashtagString).length <= HASHTAG_COUNT_LIMIT;
+  normalizeHashtags(hashtagString).length <= HASHTAG_COUNT_LIMIT;
 
-const validateHashtagUniq = (hashtagString) => {
-  const normalizeHashtags = normalizeHashtagTags(hashtagString);
-  return normalizeHashtags.length === new Set(normalizeHashtags).size;
+const validateHashtagUniqueness = (hashtagString) => {
+  const normalizedHashtags = normalizeHashtags(hashtagString);
+  return normalizedHashtags.length === new Set(normalizedHashtags).size;
 };
 
 const validateHashtagPattern = (hashtagString) =>
-  !hashtagString || normalizeHashtagTags(hashtagString).every(isValidHashtag);
+  !hashtagString || normalizeHashtags(hashtagString).every(isValidHashtag);
 
 const validateTextarea = (comment) => comment.length <= COMMENT_LENGTH_LIMIT;
 
@@ -48,7 +48,7 @@ const createFormValidation = (form) => {
   const pristine = createPristineValidator(form);
 
   pristine.addValidator(hashtagsInput, validateHashtagCount, getHashtagCountErrorMessage, 3, true);
-  pristine.addValidator(hashtagsInput, validateHashtagUniq, getHashtagUniqErrorMessage, 2, true);
+  pristine.addValidator(hashtagsInput, validateHashtagUniqueness, getHashtagUniqErrorMessage, 2, true);
   pristine.addValidator(hashtagsInput, validateHashtagPattern, getHashtagPatternErrorMessage, 1, false);
   pristine.addValidator(textarea, validateTextarea, getTextareaErrorMessage);
 
