@@ -1,9 +1,4 @@
-import {
-  handleEscapeKey,
-  show,
-  hide,
-  isHidden,
-} from './utils.js';
+import { handleEscapeKey, show, hide, isHidden } from './utils.js';
 
 const COMMENTS_PER_LOAD = 5;
 

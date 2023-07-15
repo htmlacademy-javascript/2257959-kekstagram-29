@@ -14,9 +14,9 @@ const changeScale = (direction, input, image) => {
   }
 };
 
-const onScaleUpButtonClick = (input, image) => changeScale('up', input, image);
+const onScaleUpButtonClick = (...parameters) => changeScale('up', ...parameters);
 
-const onScaleDownButtonClick = (input, image) => changeScale('down', input, image);
+const onScaleDownButtonClick = (...parameters) => changeScale('down', ...parameters);
 
 const createFormScaling = (form, image) => {
   const scaleUpButton = form.querySelector('.scale__control--bigger');

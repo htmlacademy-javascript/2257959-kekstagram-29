@@ -1,8 +1,12 @@
-import { createPhotos } from './photo.js';
+import { getData } from './http.js';
+import { showErrorBlock } from './utils.js';
 import { renderThumbnails } from './thumbnail.js';
 import { initiateForm } from './form.js';
 
-const photos = createPhotos();
-renderThumbnails(photos);
+getData()
+  .then(renderThumbnails)
+  .catch(({ message }) => showErrorBlock(message));
 
 initiateForm();
+
+
