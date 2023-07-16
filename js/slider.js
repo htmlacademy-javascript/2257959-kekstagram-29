@@ -1,7 +1,4 @@
-import {
-  show,
-  hide,
-} from './utils.js';
+import { show, hide } from './utils.js';
 
 const sliderConfigs = {
   chrome: {

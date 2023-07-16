@@ -29,7 +29,7 @@ const validateHashtagUniqueness = (hashtagString) => {
 const validateHashtagPattern = (hashtagString) =>
   !hashtagString || normalizeHashtags(hashtagString).every(isValidHashtag);
 
-const validateTextarea = (comment) => comment.length <= COMMENT_LENGTH_LIMIT;
+const validateTextarea = ({ length }) => length <= COMMENT_LENGTH_LIMIT;
 
 const getHashtagCountErrorMessage = () => 'Нельзя указать больше пяти хэш-тегов !';
 const getHashtagUniqErrorMessage = () => 'Один и тот же хэш-тег не может быть использован дважды !';
