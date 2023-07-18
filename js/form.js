@@ -4,9 +4,9 @@ import { createFormValidation } from './validate.js';
 import { createFormScaling } from './scale.js';
 import { createFormSlider } from './slider.js';
 import { sendData } from './http.js';
+import { createFormPreview } from './preview.js';
 
 const FIELDS = ['hashtags', 'description'];
-
 const SubmitButtonText = {
   IDLE: 'Опубликовать',
   SUBMITTING: 'Опубликовываю...',
@@ -22,10 +22,18 @@ const submitButton = form.querySelector('.img-upload__submit');
 const formValidation = createFormValidation(form);
 const formScaling = createFormScaling(form, image);
 const formSlider = createFormSlider(form, image);
+const formPreview = createFormPreview(form, image);
 
 const onDocumentKeydown = (evt) => handleEscapeKey(closeFormModal, evt);
 
-const onUploadFileInputChange = openFormModal;
+const onUploadFileInputChange = (evt) => {
+  const file = evt.target.files[0];
+
+  if (formPreview.validate(file)) {
+    formPreview.refresh(file);
+    openFormModal();
+  }
+};
 
 const onCloseModalButtonClick = closeFormModal;
 
@@ -34,6 +42,7 @@ const formReset = () => {
   formValidation.reset();
   formScaling.reset();
   formSlider.reset();
+  formPreview.reset();
 };
 
 function closeFormModal() {

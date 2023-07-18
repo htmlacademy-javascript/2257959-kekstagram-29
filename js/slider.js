@@ -10,9 +10,7 @@ const sliderConfigs = {
       start: 1,
       step: 0.1,
       format: {
-        to: (value) => Number.isInteger(value)
-          ? value.toFixed(0)
-          : value.toFixed(1),
+        to: (value) => value.toFixed(2),
         from: (value) => parseFloat(value),
       },
     },
@@ -27,9 +25,7 @@ const sliderConfigs = {
       start: 1,
       step: 0.1,
       format: {
-        to: (value) => Number.isInteger(value)
-          ? value.toFixed(0)
-          : value.toFixed(1),
+        to: (value) => value.toFixed(2),
         from: (value) => parseFloat(value),
       },
     },
@@ -76,9 +72,7 @@ const sliderConfigs = {
       start: 3,
       step: 0.1,
       format: {
-        to: (value) => Number.isInteger(value)
-          ? value.toFixed(0)
-          : value.toFixed(1),
+        to: (value) =>value.toFixed(2),
         from: (value) => parseFloat(value),
       },
     },
@@ -101,7 +95,7 @@ const onSliderUpdate = (input, image, values, handle) => {
   const newValue = values[handle];
   const newFilterValue = image.style.filter.replace(/\(.*\)/, `(${newValue})`);
 
-  input.value = newValue;
+  input.value = newValue.toString();
   image.style.filter = newFilterValue;
 };
 

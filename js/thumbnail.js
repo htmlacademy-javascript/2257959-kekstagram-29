@@ -28,6 +28,9 @@ const createThumbnail = ({ url, description, likes, comments }) => {
   return thumbnail;
 };
 
-const renderThumbnails = (photos) => picturesContainer.append(...photos.map(createThumbnail));
+const renderThumbnails = (photos) => {
+  picturesContainer.querySelectorAll('.picture').forEach((thumbnail) => thumbnail.remove());
+  picturesContainer.append(...photos.map(createThumbnail));
+};
 
 export { renderThumbnails };
