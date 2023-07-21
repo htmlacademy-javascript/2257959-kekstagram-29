@@ -23,7 +23,13 @@ const createThumbnail = ({ url, description, likes, comments }) => {
   thumbnail.querySelector('.picture__likes').textContent = likes;
   thumbnail.querySelector('.picture__comments').textContent = comments.length;
 
-  thumbnail.addEventListener('click', onThumbnailClick.bind(null, url, description, likes, comments));
+  thumbnail.addEventListener('click', onThumbnailClick.bind(
+    thumbnail,
+    url,
+    description,
+    likes,
+    comments
+  ));
 
   return thumbnail;
 };

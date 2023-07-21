@@ -77,9 +77,9 @@ const setRandomUniqueIndexPicker = (min, max) => {
 };
 
 const setRandomUniqueArrayPicker = (elements) => {
-  const picker = setRandomUniqueIndexPicker(0, elements.length - 1);
+  const getRandomUniqueIndex = setRandomUniqueIndexPicker(0, elements.length - 1);
 
-  return () => elements[picker()];
+  return () => elements[getRandomUniqueIndex()];
 };
 
 export {

@@ -7,10 +7,6 @@ import { sendData } from './http.js';
 import { createFormPreview } from './preview.js';
 
 const FIELDS = ['hashtags', 'description'];
-const SubmitButtonText = {
-  IDLE: 'Опубликовать',
-  SUBMITTING: 'Опубликовываю...',
-};
 
 const form = document.querySelector('#upload-select-image');
 const image = form.querySelector('.img-upload__preview img');
@@ -18,6 +14,11 @@ const uploadFileInput = form.querySelector('#upload-file');
 const formModal = form.querySelector('.img-upload__overlay');
 const closeModalButton = form.querySelector('.img-upload__cancel');
 const submitButton = form.querySelector('.img-upload__submit');
+
+const SubmitButtonText = {
+  IDLE: 'Опубликовать',
+  SUBMITTING: 'Опубликовываю...',
+};
 
 const formValidation = createFormValidation(form);
 const formScaling = createFormScaling(form, image);

@@ -15,6 +15,15 @@ const commentTemplate = document.querySelector('#comment')
   .content
   .querySelector('.social__comment');
 
+const onDocumentKeydown = (evt) => handleEscapeKey(closePhotoModal, evt);
+
+const onCloseModalButtonClick = () => closePhotoModal();
+
+const onLoadCommentsButtonClick = () => {
+  const count = showComments();
+  increaseCommentCounter(count);
+};
+
 const setCommentCounter = (initialCount) => {
   const initialCommentCount = initialCount >= COMMENTS_PER_LOAD
     ? COMMENTS_PER_LOAD
@@ -22,11 +31,11 @@ const setCommentCounter = (initialCount) => {
   currentCommentCounter.textContent = `${initialCommentCount} из `;
 };
 
-const increaseCommentCounter = (count) => {
+function increaseCommentCounter(count) {
   let currentCommentCount = parseInt(currentCommentCounter.textContent, 10);
   currentCommentCount += count;
   currentCommentCounter.textContent = `${currentCommentCount} из `;
-};
+}
 
 const createComment = ({ avatar: avatarPath, message, name }) => {
   const comment = commentTemplate.cloneNode(true);
@@ -53,7 +62,7 @@ const appendComments = (commentData) => {
   }));
 };
 
-const renderComments = () => {
+function showComments() {
   const filteredComments = [...commentList.children].filter(isHidden);
   const { length } = filteredComments;
 
@@ -68,6 +77,21 @@ const renderComments = () => {
   }
 
   return index;
+}
+
+function closePhotoModal() {
+  document.body.classList.remove('modal-open');
+  show(loadCommentsButton);
+  hide(photoModal);
+
+  document.removeEventListener('keydown', onDocumentKeydown);
+}
+
+const openPhotoModal = () => {
+  document.body.classList.add('modal-open');
+  show(photoModal);
+
+  document.addEventListener('keydown', onDocumentKeydown);
 };
 
 const initiatePhotoModal = (url, description, likes, comments) => {
@@ -84,30 +108,6 @@ const initiatePhotoModal = (url, description, likes, comments) => {
 
   setCommentCounter(length);
   appendComments(comments);
-};
-
-const onDocumentKeydown = (evt) => handleEscapeKey(closePhotoModal, evt);
-
-const onCloseModalButtonClick = () => closePhotoModal();
-
-const onLoadCommentsButtonClick = () => {
-  const count = renderComments();
-  increaseCommentCounter(count);
-};
-
-function closePhotoModal() {
-  document.body.classList.remove('modal-open');
-  show(loadCommentsButton);
-  hide(photoModal);
-
-  document.removeEventListener('keydown', onDocumentKeydown);
-}
-
-const openPhotoModal = () => {
-  document.body.classList.add('modal-open');
-  show(photoModal);
-
-  document.addEventListener('keydown', onDocumentKeydown);
 };
 
 const renderPhotoModal = (...photoParameters) => {

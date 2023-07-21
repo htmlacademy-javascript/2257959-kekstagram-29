@@ -2,6 +2,8 @@ const HASHTAG_PATTERN = /^#[a-zа-яё0-9]{1,19}$/i;
 const HASHTAG_COUNT_LIMIT = 5;
 const COMMENT_LENGTH_LIMIT = 140;
 
+const onElementKeydown = (evt) => evt.stopPropagation();
+
 const createPristineValidator = (form) => new Pristine(
   form,
   {
@@ -35,8 +37,6 @@ const getHashtagCountErrorMessage = () => 'Нельзя указать боль�
 const getHashtagUniqErrorMessage = () => 'Один и тот же хэш-тег не может быть использован дважды !';
 const getHashtagPatternErrorMessage = () => 'Введён невалидный хэш-тег !';
 const getTextareaErrorMessage = () => 'Длина комментария не может составлять больше 140 символов !';
-
-const onElementKeydown = (evt) => evt.stopPropagation();
 
 const stopKeydownEventPropagation = (...elements) => elements.forEach((element) =>
   element.addEventListener('keydown', onElementKeydown));
