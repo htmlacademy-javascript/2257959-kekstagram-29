@@ -1,4 +1,4 @@
-const HASHTAG_PATTERN = /^#[a-zа-яё0-9]{1,19}/i;
+const HASHTAG_PATTERN = /^#[a-zа-яё0-9]{1,19}$/i;
 const HASHTAG_COUNT_LIMIT = 5;
 const COMMENT_LENGTH_LIMIT = 140;
 
@@ -49,13 +49,13 @@ const createFormValidation = (form) => {
 
   pristine.addValidator(hashtagsInput, validateHashtagCount, getHashtagCountErrorMessage, 3, true);
   pristine.addValidator(hashtagsInput, validateHashtagUniqueness, getHashtagUniqErrorMessage, 2, true);
-  pristine.addValidator(hashtagsInput, validateHashtagPattern, getHashtagPatternErrorMessage, 1, false);
+  pristine.addValidator(hashtagsInput, validateHashtagPattern, getHashtagPatternErrorMessage, 1);
   pristine.addValidator(textarea, validateTextarea, getTextareaErrorMessage);
 
   stopKeydownEventPropagation(hashtagsInput, textarea);
 
   return {
-    validate: () => pristine.validate(hashtagsInput, textarea),
+    validate: () => pristine.validate([textarea, hashtagsInput]),
     reset: pristine.reset,
   };
 };
