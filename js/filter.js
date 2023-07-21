@@ -16,11 +16,6 @@ const filters = {
     photos.slice().sort((photoA, photoB) => photoB.comments.length - photoA.comments.length),
 };
 
-const renderButton = (clickedButton, filtersState) => {
-  filtersState.activeFilter.classList.remove('img-filters__button--active');
-  clickedButton.classList.add('img-filters__button--active');
-};
-
 function onFilterButtonClick(photos, optimizedRenderThumbnails, filtersState) {
   const filterPhotos = filters[this.id];
 
@@ -31,6 +26,11 @@ function onFilterButtonClick(photos, optimizedRenderThumbnails, filtersState) {
     renderButton(this, filtersState);
     filtersState.activeFilter = this;
   }
+}
+
+function renderButton(clickedButton, filtersState) {
+  filtersState.activeFilter.classList.remove('img-filters__button--active');
+  clickedButton.classList.add('img-filters__button--active');
 }
 
 const initiateFilters = (photos, renderThumbnails) => {

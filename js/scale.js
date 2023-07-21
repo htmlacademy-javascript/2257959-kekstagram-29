@@ -2,7 +2,11 @@ const SCALE_STEP = 25;
 const SCALE_MIN = 25;
 const SCALE_MAX = 100;
 
-const changeScale = (direction, input, image) => {
+const onScaleUpButtonClick = (...parameters) => changeScale('up', ...parameters);
+
+const onScaleDownButtonClick = (...parameters) => changeScale('down', ...parameters);
+
+function changeScale(direction, input, image) {
   let newValue = parseInt(input.value, 10);
   newValue += direction === 'up' ? SCALE_STEP : -SCALE_STEP;
 
@@ -12,11 +16,7 @@ const changeScale = (direction, input, image) => {
     input.value = `${newValue}%`;
     image.style.transform = `scale(${transformValue})`;
   }
-};
-
-const onScaleUpButtonClick = (...parameters) => changeScale('up', ...parameters);
-
-const onScaleDownButtonClick = (...parameters) => changeScale('down', ...parameters);
+}
 
 const createFormScaling = (form, image) => {
   const scaleUpButton = form.querySelector('.scale__control--bigger');
